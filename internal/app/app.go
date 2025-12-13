@@ -9,7 +9,9 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 
 	_ "github.com/dazraf/go-api-example/api" // Load swagger docs
-) // Application holds the application dependencies and configuration
+)
+
+// Application holds the application dependencies and configuration
 type Application struct {
 	Config      *config.Config
 	Router      *gin.Engine

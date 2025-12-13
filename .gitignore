@@ -1,5 +1,14 @@
-# Binary
+# Binaries
+bin/
 api-server
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test coverage
+coverage/
 
 # Generated docs
 /docs/
@@ -7,6 +16,10 @@ api-server
 # Environment variables
 .env
 *.env
+
+# Go workspace files
+go.work
+go.work.sum
 
 # OS files
 .DS_Store

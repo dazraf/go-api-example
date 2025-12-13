@@ -13,9 +13,10 @@ test-integration:
 
 test-coverage:
 	@echo "Running tests with coverage..."
-	go test -v -coverprofile=coverage.out ./...
-	go tool cover -html=coverage.out -o coverage.html
-	@echo "Coverage report generated: coverage.html"
+	@mkdir -p coverage
+	go test -v -coverprofile=coverage/coverage.out ./...
+	go tool cover -html=coverage/coverage.out -o coverage/coverage.html
+	@echo "Coverage report generated: coverage/coverage.html"
 
 test-race:
 	@echo "Running tests with race detection..."
@@ -44,10 +45,10 @@ run: docs
 	go run main.go
 
 build: docs
-	go build -o api-server main.go
+	go build -o bin/api-server main.go
 
 clean:
-	rm -rf docs/ api-server
+	rm -rf docs/ bin/ coverage/
 	go clean -testcache
 	rm -f coverage.out coverage.html
 

@@ -58,6 +58,9 @@ Perfect for developers who want to start with a solid foundation rather than bui
 git clone <your-repo-url>
 cd go-api-example
 
+# Generate Open API docs
+make docs
+
 # Install dependencies
 make deps
 

@@ -8,10 +8,8 @@ import (
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 
-	_ "github.com/dazraf/go-api-example/docs" // Load swagger docs
-)
-
-// Application holds the application dependencies and configuration
+	_ "github.com/dazraf/go-api-example/api" // Load swagger docs
+) // Application holds the application dependencies and configuration
 type Application struct {
 	Config      *config.Config
 	Router      *gin.Engine

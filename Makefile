@@ -40,7 +40,7 @@ lint:
 # Documentation and build (existing targets enhanced)
 docs:
 	@which swag > /dev/null || (echo "Installing swag..." && go install github.com/swaggo/swag/cmd/swag@latest)
-	swag init -g cmd/api-server/main.go
+	swag init -g cmd/api-server/main.go -o api/ --parseDependency
 
 run: docs
 	go run ./cmd/api-server
@@ -49,9 +49,9 @@ build: docs
 	go build -o bin/api-server ./cmd/api-server
 
 clean:
-	rm -rf docs/ bin/ coverage/
+	rm -rf bin/ coverage/
+	rm -f api/docs.go api/swagger.json api/swagger.yaml
 	go clean -testcache
-	rm -f coverage.out coverage.html
 
 # Run all checks
 ci: deps test test-race test-coverage lint

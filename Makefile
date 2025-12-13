@@ -5,31 +5,32 @@ test: test-unit test-integration
 
 test-unit:
 	@echo "Running unit tests..."
-	go test -v -short ./store/... ./handlers/...
+	go test -v -short ./internal/store/... ./internal/handlers/...
 
 test-integration:
 	@echo "Running integration tests..."
-	go test -v -run Integration ./...
+	go test -v -run Integration ./internal/...
 
 test-coverage:
 	@echo "Running tests with coverage..."
 	@mkdir -p coverage
-	go test -v -coverprofile=coverage/coverage.out ./...
+	go test -v -coverprofile=coverage/coverage.out ./internal/...
 	go tool cover -html=coverage/coverage.out -o coverage/coverage.html
 	@echo "Coverage report generated: coverage/coverage.html"
 
 test-race:
 	@echo "Running tests with race detection..."
-	go test -v -race ./...
+	go test -v -race ./internal/...
 
 benchmark:
 	@echo "Running benchmarks..."
-	go test -v -bench=. -benchmem ./store/...
+	go test -v -bench=. -benchmem ./internal/store/...
 
 # Dependencies
 deps:
 	go mod tidy
 	go get github.com/stretchr/testify@v1.9.0
+	go get gopkg.in/yaml.v3
 
 # Linting
 lint:
@@ -39,13 +40,13 @@ lint:
 # Documentation and build (existing targets enhanced)
 docs:
 	@which swag > /dev/null || (echo "Installing swag..." && go install github.com/swaggo/swag/cmd/swag@latest)
-	swag init
+	swag init -g cmd/api-server/main.go
 
 run: docs
-	go run main.go
+	go run ./cmd/api-server
 
 build: docs
-	go build -o bin/api-server main.go
+	go build -o bin/api-server ./cmd/api-server
 
 clean:
 	rm -rf docs/ bin/ coverage/

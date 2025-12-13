@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/dazraf/go-api-example/store"
+	"github.com/dazraf/go-api-example/internal/store"
 	"github.com/gin-gonic/gin"
 )
 

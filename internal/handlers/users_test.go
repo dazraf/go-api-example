@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
 
-	"github.com/dazraf/go-api-example/store"
+	"github.com/dazraf/go-api-example/internal/store"
 )
 
 // MockUserStore for testing
@@ -197,7 +197,7 @@ func TestUserHandler_Integration_FullCRUDWorkflow(t *testing.T) {
 
 	assert.Equal(t, http.StatusCreated, w.Code)
 	var createdUser store.User
-	json.Unmarshal(w.Body.Bytes(), &createdUser)
+	_ = json.Unmarshal(w.Body.Bytes(), &createdUser)
 	assert.NotZero(t, createdUser.ID)
 
 	// Get user
@@ -212,7 +212,7 @@ func TestUserHandler_Integration_FullCRUDWorkflow(t *testing.T) {
 	router.ServeHTTP(w, req)
 	assert.Equal(t, http.StatusOK, w.Code)
 	var users []store.User
-	json.Unmarshal(w.Body.Bytes(), &users)
+	_ = json.Unmarshal(w.Body.Bytes(), &users)
 	assert.Equal(t, 1, len(users))
 
 	// Update user

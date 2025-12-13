@@ -10,7 +10,7 @@ api-server
 # Test coverage
 coverage/
 
-# Generated docs
+# Generated docs (keep api/ directory with hand-maintained specs)
 /docs/
 
 # Environment variables
@@ -20,6 +20,9 @@ coverage/
 # Go workspace files
 go.work
 go.work.sum
+
+# Dependencies
+vendor/
 
 # OS files
 .DS_Store

@@ -1,0 +1,78 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        go-version: ['1.21', '1.22']
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: ${{ matrix.go-version }}
+    
+    - name: Cache Go modules
+      uses: actions/cache@v3
+      with:
+        path: ~/go/pkg/mod
+        key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+        restore-keys: |
+          ${{ runner.os }}-go-
+    
+    - name: Install dependencies
+      run: make deps
+    
+    - name: Generate docs
+      run: make docs
+    
+    - name: Run tests
+      run: make test
+    
+    - name: Run race condition tests
+      run: make test-race
+    
+    - name: Generate coverage
+      run: make test-coverage
+    
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./coverage/coverage.out
+        flags: unittests
+        name: codecov-umbrella
+    
+    - name: Run benchmarks
+      run: make benchmark
+    
+    - name: Build
+      run: make build
+
+  docker:
+    runs-on: ubuntu-latest
+    needs: test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Build Docker image
+      run: docker build -f build/package/Dockerfile -t go-api-example:latest .
+    
+    - name: Test Docker image
+      run: |
+        docker run -d --name test-container -p 8080:8080 go-api-example:latest
+        sleep 10
+        curl -f http://localhost:8080/health || exit 1
+        docker stop test-container
+        docker rm test-container

@@ -1,0 +1,12 @@
+environment: development
+
+server:
+  address: ":8080"
+  port: 8080
+
+database:
+  type: "memory"
+
+logging:
+  level: "info"
+  format: "json"

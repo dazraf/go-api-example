@@ -425,7 +425,7 @@ func (suite *UserStoreTestSuite) TestGetAllAfterOperations() {
 	suite.Equal(2, len(users))
 
 	// Delete one user
-	suite.store.Delete(user1.ID)
+	_ = suite.store.Delete(user1.ID)
 
 	users, err = suite.store.GetAll()
 	suite.Require().NoError(err)
@@ -444,7 +444,7 @@ func BenchmarkMemoryUserStore_Create(b *testing.B) {
 
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		store.Create(user)
+		_, _ = store.Create(user)
 	}
 }
 
@@ -454,7 +454,7 @@ func BenchmarkMemoryUserStore_GetByID(b *testing.B) {
 
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		store.GetByID(user.ID)
+		_, _ = store.GetByID(user.ID)
 	}
 }
 
@@ -462,12 +462,12 @@ func BenchmarkMemoryUserStore_GetAll(b *testing.B) {
 	store := NewMemoryUserStore()
 	// Create 1000 users for realistic benchmark
 	for i := 0; i < 1000; i++ {
-		store.Create(User{Name: fmt.Sprintf("User %d", i), Email: fmt.Sprintf("user%d@example.com", i)})
+		_, _ = store.Create(User{Name: fmt.Sprintf("User %d", i), Email: fmt.Sprintf("user%d@example.com", i)})
 	}
 
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		store.GetAll()
+		_, _ = store.GetAll()
 	}
 }
 
@@ -475,13 +475,13 @@ func BenchmarkMemoryUserStore_ConcurrentReads(b *testing.B) {
 	store := NewMemoryUserStore()
 	// Setup test data
 	for i := 0; i < 100; i++ {
-		store.Create(User{Name: fmt.Sprintf("User %d", i), Email: fmt.Sprintf("user%d@example.com", i)})
+		_, _ = store.Create(User{Name: fmt.Sprintf("User %d", i), Email: fmt.Sprintf("user%d@example.com", i)})
 	}
 
 	b.ResetTimer()
 	b.RunParallel(func(pb *testing.PB) {
 		for pb.Next() {
-			store.GetAll()
+			_, _ = store.GetAll()
 		}
 	})
 }

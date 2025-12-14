@@ -1,4 +1,4 @@
-.PHONY: test test-unit test-integration test-coverage benchmark test-race deps clean lint docs run build
+.PHONY: test test-unit test-integration test-coverage benchmark test-race deps clean lint docs run build docker-build docker-run docker-stop docker-clean
 
 # Test targets
 test: test-unit test-integration
@@ -48,6 +48,20 @@ run: docs
 build: docs deps
 	go build -o bin/api-server ./cmd/api-server
 
+# Docker targets
+docker-build:
+	cd deployments && docker compose build
+
+docker-run: docker-build
+	cd deployments && docker compose up
+
+docker-stop:
+	cd deployments && docker compose down
+
+docker-clean: docker-stop
+	cd deployments && docker compose down --volumes --remove-orphans
+	docker image prune -f
+
 clean:
 	rm -rf bin/ coverage/
 	rm -f api/docs.go api/swagger.json api/swagger.yaml
@@ -71,6 +85,10 @@ help:
 	@echo "  docs           - Generate Swagger documentation"
 	@echo "  run            - Run development server"
 	@echo "  build          - Build the application"
+	@echo "  docker-build   - Build Docker image"
+	@echo "  docker-run     - Build and run with Docker Compose"
+	@echo "  docker-stop    - Stop Docker containers"
+	@echo "  docker-clean   - Stop containers and clean up Docker resources"
 	@echo "  clean          - Clean build artifacts and test cache"
 	@echo "  ci             - Run all CI checks"
 	@echo "  help           - Show this help message"

@@ -16,9 +16,9 @@
         "version": "1.0"
     },
     "host": "localhost:8080",
-    "basePath": "/api/v1",
+    "basePath": "/",
     "paths": {
-        "/users": {
+        "/api/v1/users": {
             "get": {
                 "description": "Get a list of all users",
                 "consumes": [
@@ -82,7 +82,7 @@
                 }
             }
         },
-        "/users/{id}": {
+        "/api/v1/users/{id}": {
             "get": {
                 "description": "Get user by ID",
                 "consumes": [
@@ -203,6 +203,29 @@
                     }
                 }
             }
+        },
+        "/health": {
+            "get": {
+                "description": "Check if the service is healthy and running",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "system"
+                ],
+                "summary": "Health check",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/internal_app.HealthResponse"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -220,6 +243,15 @@
                 "name": {
                     "type": "string",
                     "example": "John Doe"
+                }
+            }
+        },
+        "internal_app.HealthResponse": {
+            "type": "object",
+            "properties": {
+                "status": {
+                    "type": "string",
+                    "example": "ok"
                 }
             }
         },

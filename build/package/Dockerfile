@@ -1,8 +1,11 @@
 # Multi-stage build for Go application
-FROM golang:1.21-alpine AS builder
+FROM golang:1.23-alpine AS builder
 
 # Install git for go mod download
 RUN apk add --no-cache git ca-certificates
+
+# Set GOTOOLCHAIN to allow downloading newer Go versions
+ENV GOTOOLCHAIN=auto
 
 # Set working directory
 WORKDIR /app

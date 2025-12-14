@@ -1,4 +1,4 @@
-basePath: /api/v1
+basePath: /
 definitions:
   github_com_dazraf_go-api-example_internal_store.User:
     properties:
@@ -10,6 +10,12 @@ definitions:
         type: integer
       name:
         example: John Doe
+        type: string
+    type: object
+  internal_app.HealthResponse:
+    properties:
+      status:
+        example: ok
         type: string
     type: object
   internal_handlers.ErrorResponse:
@@ -32,7 +38,7 @@ info:
   title: User API
   version: "1.0"
 paths:
-  /users:
+  /api/v1/users:
     get:
       consumes:
       - application/json
@@ -74,7 +80,7 @@ paths:
       summary: Create a user
       tags:
       - users
-  /users/{id}:
+  /api/v1/users/{id}:
     delete:
       consumes:
       - application/json
@@ -155,4 +161,19 @@ paths:
       summary: Update a user
       tags:
       - users
+  /health:
+    get:
+      consumes:
+      - application/json
+      description: Check if the service is healthy and running
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal_app.HealthResponse'
+      summary: Health check
+      tags:
+      - system
 swagger: "2.0"

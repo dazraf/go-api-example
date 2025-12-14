@@ -78,9 +78,24 @@ func setupRouter(userHandler *handlers.UserHandler, cfg *config.Config) *gin.Eng
 	}
 
 	// Health check endpoint
-	router.GET("/health", func(c *gin.Context) {
-		c.JSON(200, gin.H{"status": "ok"})
-	})
+	router.GET("/health", healthHandler)
 
 	return router
+}
+
+// HealthResponse represents the health check response
+type HealthResponse struct {
+	Status string `json:"status" example:"ok"`
+}
+
+// HealthCheck godoc
+// @Summary Health check
+// @Description Check if the service is healthy and running
+// @Tags system
+// @Accept json
+// @Produce json
+// @Success 200 {object} HealthResponse
+// @Router /health [get]
+func healthHandler(c *gin.Context) {
+	c.JSON(200, HealthResponse{Status: "ok"})
 }

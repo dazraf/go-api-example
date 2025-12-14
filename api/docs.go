@@ -24,7 +24,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/users": {
+        "/api/v1/users": {
             "get": {
                 "description": "Get a list of all users",
                 "consumes": [
@@ -88,7 +88,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/users/{id}": {
+        "/api/v1/users/{id}": {
             "get": {
                 "description": "Get user by ID",
                 "consumes": [
@@ -209,6 +209,29 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/health": {
+            "get": {
+                "description": "Check if the service is healthy and running",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "system"
+                ],
+                "summary": "Health check",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/internal_app.HealthResponse"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -229,6 +252,15 @@ const docTemplate = `{
                 }
             }
         },
+        "internal_app.HealthResponse": {
+            "type": "object",
+            "properties": {
+                "status": {
+                    "type": "string",
+                    "example": "ok"
+                }
+            }
+        },
         "internal_handlers.ErrorResponse": {
             "type": "object",
             "properties": {
@@ -245,7 +277,7 @@ const docTemplate = `{
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
 	Host:             "localhost:8080",
-	BasePath:         "/api/v1",
+	BasePath:         "/",
 	Schemes:          []string{},
 	Title:            "User API",
 	Description:      "A simple user management API",

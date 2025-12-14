@@ -28,7 +28,7 @@ func NewUserHandler(userStore store.UserStore) *UserHandler {
 // @Accept json
 // @Produce json
 // @Success 200 {array} store.User
-// @Router /users [get]
+// @Router /api/v1/users [get]
 func (h *UserHandler) GetUsers(c *gin.Context) {
 	users, err := h.userStore.GetAll()
 	if err != nil {
@@ -46,7 +46,7 @@ func (h *UserHandler) GetUsers(c *gin.Context) {
 // @Param id path int true "User ID"
 // @Success 200 {object} store.User
 // @Failure 404 {object} ErrorResponse
-// @Router /users/{id} [get]
+// @Router /api/v1/users/{id} [get]
 func (h *UserHandler) GetUser(c *gin.Context) {
 	idStr := c.Param("id")
 	id, err := strconv.Atoi(idStr)
@@ -72,7 +72,7 @@ func (h *UserHandler) GetUser(c *gin.Context) {
 // @Param user body store.User true "User object"
 // @Success 201 {object} store.User
 // @Failure 400 {object} ErrorResponse
-// @Router /users [post]
+// @Router /api/v1/users [post]
 func (h *UserHandler) CreateUser(c *gin.Context) {
 	var user store.User
 	if err := c.ShouldBindJSON(&user); err != nil {
@@ -99,7 +99,7 @@ func (h *UserHandler) CreateUser(c *gin.Context) {
 // @Success 200 {object} store.User
 // @Failure 400 {object} ErrorResponse
 // @Failure 404 {object} ErrorResponse
-// @Router /users/{id} [put]
+// @Router /api/v1/users/{id} [put]
 func (h *UserHandler) UpdateUser(c *gin.Context) {
 	idStr := c.Param("id")
 	id, err := strconv.Atoi(idStr)
@@ -131,7 +131,7 @@ func (h *UserHandler) UpdateUser(c *gin.Context) {
 // @Param id path int true "User ID"
 // @Success 204 "No Content"
 // @Failure 404 {object} ErrorResponse
-// @Router /users/{id} [delete]
+// @Router /api/v1/users/{id} [delete]
 func (h *UserHandler) DeleteUser(c *gin.Context) {
 	idStr := c.Param("id")
 	id, err := strconv.Atoi(idStr)

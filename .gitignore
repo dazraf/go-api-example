@@ -10,12 +10,6 @@ api-server
 # Test coverage
 coverage/
 
-# Generated docs (keep api/ directory with hand-maintained specs)
-/docs/
-/api/docs.go
-/api/swagger.json
-/api/swagger.yaml
-
 # Environment variables
 .env
 *.env

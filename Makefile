@@ -54,7 +54,7 @@ clean:
 	go clean -testcache
 
 # Run all checks
-ci: deps test test-race test-coverage lint
+ci: docs deps test test-race test-coverage lint
 	@echo "All checks passed!"
 
 # Help

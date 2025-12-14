@@ -3,7 +3,6 @@
 A production-ready Go web service starter template featuring clean architecture, comprehensive testing, and scalable design patterns. Built with modern Go practices and industry-standard tools.
 
 [![Go Version](https://img.shields.io/badge/Go-1.21+-blue.svg)](https://golang.org)
-[![Test Coverage](https://img.shields.io/badge/Coverage-100%25-green.svg)](./coverage.html)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 ## 🎯 What Is This?
@@ -86,22 +85,30 @@ open http://localhost:8080/swagger/index.html
 ## 📁 Project Structure
 
 ```
-├── handlers/                   # HTTP request handlers
-│   ├── users.go               # User endpoint implementations
-│   └── users_test.go          # Handler unit & integration tests
-├── store/                     # Data access layer
-│   ├── user.go               # User model & store interface
-│   ├── memory.go             # In-memory store implementation
-│   └── memory_test.go        # Store tests with benchmarks
-├── docs/                     # Auto-generated API documentation
-│   ├── docs.go              # Swagger documentation
-│   ├── swagger.json         # OpenAPI spec
-│   └── swagger.yaml         # YAML format spec
-├── main.go                  # Application entry point
-├── Makefile                # Development & CI automation
-├── go.mod                  # Go module definition
-├── TESTING.md             # Comprehensive testing guide
-└── README.md              # This file
+├── api                          # open api + swagger docs are generated here
+├── build                        # build configuration
+├── configs                      # service configuration 
+├── deployments                  # deployment configuration - currently only docker-compose
+├── go.mod
+├── go.sum
+├── internal
+│   ├── app
+│   │   └── app.go              # top-level application service setup
+│   ├── config
+│   │   └── config.go           # application configuration types and reader
+│   ├── handlers                # web service handlers
+│   │   ├── users.go
+│   │   └── users_test.go
+│   ├── middleware              # to be used for functionality such authentication
+│   └── store                   # user storage
+│       ├── memory.go           # in-memory implementation of UserStore
+│       ├── memory_test.go
+│       └── user.go             # User and UserStore types
+├── LICENSE
+├── Makefile                    # Script for various tasks: docs, deps, build, test, test-unit etc
+├── README.md                   # This file
+├── scripts                     # Various scripts used for building and testing
+└── TESTING.md                  # Testing documentation
 ```
 
 ### 🏛️ **Architecture Layers**
@@ -207,9 +214,10 @@ go test ./handlers/...  # Handler tests only
 ### 📈 **Performance Benchmarks**
 
 ```
-BenchmarkMemoryUserStore_Create-16        3,810,510    355.1 ns/op    277 B/op    1 allocs/op
-BenchmarkMemoryUserStore_GetByID-16      39,203,636     30.53 ns/op     48 B/op    1 allocs/op
-BenchmarkMemoryUserStore_GetAll-16           95,047     11,200 ns/op  40,960 B/op    1 allocs/op
+BenchmarkMemoryUserStore_Create-16               337.3 ns/op    273 B/op    1 allocs/op
+BenchmarkMemoryUserStore_GetByID-16              30.11 ns/op     48 B/op    1 allocs/op
+BenchmarkMemoryUserStore_GetAll-16               11680 ns/op  40960 B/op    1 allocs/op
+BenchmarkMemoryUserStore_ConcurrentReads-16      919.9 ns/op   4096 B/op    1 allocs/op
 ```
 
 See [TESTING.md](./TESTING.md) for detailed testing documentation.

@@ -45,7 +45,7 @@ docs:
 run: docs
 	go run ./cmd/api-server
 
-build: docs
+build: docs deps
 	go build -o bin/api-server ./cmd/api-server
 
 clean:

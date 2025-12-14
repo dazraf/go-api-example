@@ -122,10 +122,6 @@ graph TD
     D --> F[DatabaseUserStore*]
     D --> G[CacheUserStore*]
     
-    style D fill:#e1f5fe
-    style F fill:#f3e5f5,stroke-dasharray: 5 5
-    style G fill:#f3e5f5,stroke-dasharray: 5 5
-    
     H[Tests] --> C
     H --> E
 ```
